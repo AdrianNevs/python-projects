@@ -1,0 +1,2 @@
+lista = []
+list_product = {}
