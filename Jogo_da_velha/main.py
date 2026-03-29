@@ -42,51 +42,48 @@ def diagonal_invertida(matriz_jogo,vez_do_jogador):
         if acc == 3:
             return True
 
-
-def verificar_jogadas(matriz_jogo,vez_do_jogador):# faça verificacao de jogadas
+def verificar_jogadas(matriz_jogo,vez_do_jogador):# verificacao de jogadas
     return horizontal(matriz_jogo,vez_do_jogador) or vertical(matriz_jogo,vez_do_jogador) or diagonal(matriz_jogo,vez_do_jogador) or diagonal_invertida(matriz_jogo,vez_do_jogador)
 
-
-def trocar_valores(matriz_jogo,user1=None,user2=None,vez=None):
+def trocar_valores(matriz_jogo,user,vez=None):
     jogador_ver = 'X' if vez % 2 == 0 else 'O'
-    jogadores = user1 if vez % 2 == 0 else user2
     for i in range(3):
         for j in range(3):
-            if  jogadores == matriz_jogo[i][j]:
+            if  user == matriz_jogo[i][j]:
                 matriz_jogo[i][j] = jogador_ver
-
+    print(f'====jogada{vez}====')
     menu_jogo(matriz_jogo)
 
+def vez_jogadores(jogador,matriz_jogo,numeros_restantes,indice):
+    print('\nVez do ',jogador)
+    while True:
+        try:
+            user = int(input('Digite a posicao 0 a 8: '))
+            if user <= 8 and user in numeros_restantes:
+                numeros_restantes.remove(user)
+                break
+            else:
+                print('Digite indice incorreto, ou esse numero ja foi escolhido')
+        except ValueError:
+            print('apenas numeros!!')
+    trocar_valores(matriz_jogo,user,vez=indice)
+    
 
 def jogadas(matriz_jogo,numeros_restantes):
+    jogador1 = input('Digite nome do jogador 1: ')
+    jogador2 = input('Digite nome do jogador 2: ')
+    print('====Jogada 1====')
     menu_jogo(matriz_jogo)
-
     for i in range(2,11):
-        print('Jogada', i-1)
-        if i % 2 == 0:
-            while True:
-                user1 = int(input('user1 Digite a posicao 1 a 8: '))
-                if user1 <= 8 and user1 in numeros_restantes:
-                    numeros_restantes.remove(user1)
-                    break
-                else:
-                    print('Digite indice correto, ou esse numero ja foi escolhido')
-            trocar_valores(matriz_jogo,user1,vez=i)
+        if i % 2 == 0: # jogador 1
+            vez_jogadores(jogador1,matriz_jogo,numeros_restantes,indice=i)
             if verificar_jogadas(matriz_jogo,vez_do_jogador=i):
-                return 'Jogador1 ganhou'
-
-        else:
-            while True:
-                user2_ = int(input('user2 Digite a posicao 1 a 8: '))
-                if user2_ <= 8 and user2_ in numeros_restantes:
-                    numeros_restantes.remove(user2_)
-                    break
-                else:
-                    print('Digite indice correto ou esse numero ja foi escolhido')
-            trocar_valores(matriz_jogo,user2=user2_,vez=i)
+                return f'{jogador1}, Ganhou!!'
+        else: # jogador 2
+            vez_jogadores(jogador2,matriz_jogo,numeros_restantes,indice=i)
             if verificar_jogadas(matriz_jogo,vez_do_jogador=i):
-                return 'Jogador 2 Ganhou'
+                return f'{jogador2}, Ganhou!!'
+            
     return 'Deu velha!!!'
 
-
-jogadas(matriz_jogo,numeros_restantes)
+print(jogadas(matriz_jogo,numeros_restantes))
