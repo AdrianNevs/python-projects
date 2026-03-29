@@ -7,6 +7,7 @@ Projeto feito para praticar lógica de programação.
 - Verificação de vitória (horizontal, vertical e diagonais)
 - Controle de jogadas inválidas
 - Empate (velha)
+- Tratamento de erros
 
 ## Tecnologias
 - Python
